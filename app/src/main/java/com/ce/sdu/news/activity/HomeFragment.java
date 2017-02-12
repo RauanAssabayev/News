@@ -3,15 +3,21 @@ package com.ce.sdu.news.activity;
  * Created by Rauan on 09/02/17.
  */
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.ce.sdu.news.R;
 import com.ce.sdu.news.adapter.NewsAdapter;
 import com.ce.sdu.news.model.NewsItem;
@@ -25,6 +31,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class HomeFragment extends Fragment {
     private List<NewsItem> list;
@@ -47,6 +54,20 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     class NewsGet extends AsyncTask<Void, Void, String> {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -85,8 +106,9 @@ public class HomeFragment extends Fragment {
                     String urlimg = c.getString("urlToImage");
                     String author = c.getString("author");
                     String title = c.getString("title");
+                    String desc = c.getString("description");
                     String url = c.getString("url");
-                    list.add(new NewsItem(author, title, urlimg , url));
+                    list.add(new NewsItem(title,desc,urlimg ,url));
                 }
                 recyclerView = (RecyclerView) getActivity().findViewById(R.id.rcview);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -97,6 +119,15 @@ public class HomeFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (NewsItem n :list){
+                        Log.d("LOGS",n.getTitle());
+                    }
+
+                }
+            }).start();
         }
     }
     @Override
